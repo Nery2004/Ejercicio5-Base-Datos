@@ -40,3 +40,14 @@ CREATE TABLE pedidos_detalle (
     cantidad INT NOT NULL CHECK (cantidad > 0),
     precio_total NUMERIC(10, 2) NOT NULL
 );
+
+-- Tabla: logs
+CREATE TABLE IF NOT EXISTS logs (
+  id SERIAL PRIMARY KEY,
+  table_name TEXT NOT NULL,
+  operation TEXT NOT NULL,
+  trigger_time TEXT NOT NULL,
+  old_data JSONB,
+  new_data JSONB,
+  changed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
