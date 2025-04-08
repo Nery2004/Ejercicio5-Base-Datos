@@ -1,6 +1,6 @@
 -- Tabla: usuarios
 CREATE TABLE usuarios (
-    usuario_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL, 
     telefono VARCHAR(20),
@@ -10,13 +10,13 @@ CREATE TABLE usuarios (
 
 -- Tabla: estados
 CREATE TABLE estados (
-    estado_id INT AUTO_INCREMENT PRIMARY KEY,
+    estado_id SERIAL PRIMARY KEY,
     nombre_estado VARCHAR(50) NOT NULL UNIQUE
 );
 
 -- Tabla: productos
 CREATE TABLE productos (
-    producto_id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id SERIAL PRIMARY KEY,
     producto VARCHAR(100) NOT NULL,
     precio_unitario DECIMAL(10,2) NOT NULL,
     cantidad INT NOT NULL DEFAULT 0
@@ -24,7 +24,7 @@ CREATE TABLE productos (
 
 -- Tabla: pedidos
 CREATE TABLE pedidos (
-    pedido_id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id SERIAL PRIMARY KEY,
     usuario_id INT NOT NULL,
     metodo_pago VARCHAR(50) NOT NULL,
     estado_id INT NOT NULL,
@@ -36,13 +36,14 @@ CREATE TABLE pedidos (
 
 -- Tabla: pedidos_detalle
 CREATE TABLE pedidos_detalle (
+    id SERIAL PRIMARY KEY,
     pedido_id INT NOT NULL,
     producto_id INT NOT NULL,
     cantidad INT NOT NULL,
     precio_total DECIMAL(10,2) NOT NULL,
-    PRIMARY KEY (pedido_id, producto_id),
+    UNIQUE (pedido_id, producto_id),
     FOREIGN KEY (pedido_id) REFERENCES pedidos(pedido_id),
-    FOREIGN KEY (producto_id) REFERENCES productos(producto_id)  
+    FOREIGN KEY (producto_id) REFERENCES productos(producto_id)
 );
 
 -- Tabla: logs
