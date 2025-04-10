@@ -14,24 +14,37 @@ CREATE TABLE estados (
     nombre_estado VARCHAR(50) NOT NULL UNIQUE
 );
 
+
+-- Tabla: garantias
+CREATE TABLE garantias (
+    id SERIAL PRIMARY KEY,
+    duracion INT CHECK(duracion >= 0),
+    estado VARCHAR(20) NOT NULL CHECK (estado IN ('Activa', 'Expirada', 'Utilizada', 'Cancelada')),
+    condiciones TEXT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Tabla: productos
 CREATE TABLE productos (
-    producto_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     producto VARCHAR(100) NOT NULL,
+    garantia_id INT NOT NULL,
     precio_unitario DECIMAL(10,2) NOT NULL,
-    cantidad INT NOT NULL DEFAULT 0
+    cantidad INT NOT NULL DEFAULT 0,
+    FOREIGN KEY (garantia_id) REFERENCES garantias(id) ON DELETE CASCADE
 );
 
 -- Tabla: pedidos
 CREATE TABLE pedidos (
-    pedido_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     usuario_id INT NOT NULL,
     metodo_pago VARCHAR(50) NOT NULL,
     estado_id INT NOT NULL,
     sub_total DECIMAL(10,2) NOT NULL,
     fecha_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id),
-    FOREIGN KEY (estado_id) REFERENCES estados(estado_id)  
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (estado_id) REFERENCES estados(estado_id) ON DELETE CASCADE 
 );
 
 -- Tabla: pedidos_detalle
@@ -42,8 +55,8 @@ CREATE TABLE pedidos_detalle (
     cantidad INT NOT NULL,
     precio_total DECIMAL(10,2) NOT NULL,
     UNIQUE (pedido_id, producto_id),
-    FOREIGN KEY (pedido_id) REFERENCES pedidos(pedido_id),
-    FOREIGN KEY (producto_id) REFERENCES productos(producto_id)
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
 );
 
 -- Tabla: logs
@@ -55,16 +68,4 @@ CREATE TABLE IF NOT EXISTS logs (
   old_data JSONB,
   new_data JSONB,
   changed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla: garantias
-CREATE TABLE garantias (
-    id SERIAL PRIMARY KEY,
-    pedido_detalle_id INT NOT NULL REFERENCES pedidos_detalle(id) ON DELETE CASCADE,
-    fecha_inicio DATE NOT NULL DEFAULT CURRENT_DATE,
-    fecha_fin DATE NOT NULL,
-    estado VARCHAR(20) NOT NULL CHECK (estado IN ('Activa', 'Expirada', 'Utilizada', 'Cancelada')),
-    condiciones TEXT,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
