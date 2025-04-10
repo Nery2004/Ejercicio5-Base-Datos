@@ -1,21 +1,28 @@
+-- Garantias
+INSERT INTO garantias (duracion, estado, condiciones) VALUES 
+  (3,  'Activa', 'Garantía limitada de 3 meses'),
+  (6,  'Activa', 'Garantía limitada de 6 meses'),
+  (12, 'Activa', 'Garantía de 12 meses por defectos de fábrica'),
+  (0,  'Activa', 'Sin garantía');
+
 
 -- Productos
-INSERT INTO productos (producto, precio_unitario, cantidad) VALUES
-('Mouse inalámbrico Logitech', 25.99, 50),
-('Teclado mecánico Redragon', 45.00, 30),
-('Cargador USB-C 20W', 15.50, 100),
-('Audífonos Bluetooth Sony', 85.75, 40),
-('Power bank 10000mAh', 35.00, 60),
-('Webcam HD 1080p', 49.99, 25),
-('Cable HDMI 2.0 - 2m', 9.99, 150),
-('Soporte para laptop', 29.00, 40),
-('Hub USB 4 puertos', 22.00, 70),
-('Limpieza y mantenimiento de laptop', 50.00, 999),
-('Cambio de pasta térmica', 25.00, 999),
-('Adaptador Bluetooth USB', 12.50, 80),
-('Protector de pantalla 15.6"', 10.00, 90),
-('Base refrigerante para laptop', 27.50, 35),
-('Lámpara LED USB', 5.75, 200);
+INSERT INTO productos (producto, garantia_id, precio_unitario, cantidad) VALUES
+('Mouse inalámbrico Logitech',    2, 25.99, 50),
+('Teclado mecánico Redragon',     3, 45.00, 30),
+('Cargador USB-C 20W',            2, 15.50, 100),
+('Audífonos Bluetooth Sony',      3, 85.75, 40),
+('Power bank 10000mAh',           3, 35.00, 60),
+('Webcam HD 1080p',               3, 49.99, 25),
+('Cable HDMI 2.0 - 2m',           1,  9.99, 150),
+('Soporte para laptop',           2, 29.00, 40),
+('Hub USB 4 puertos',             1, 22.00, 70),
+('Limpieza y mantenimiento de laptop', 4, 50.00, 999),
+('Cambio de pasta térmica',       4, 25.00, 999),
+('Adaptador Bluetooth USB',       2, 12.50, 80),
+('Protector de pantalla 15.6"',   1, 10.00, 90),
+('Base refrigerante para laptop', 2, 27.50, 35),
+('Lámpara LED USB',               1,  5.75, 200);
 
 -- Usuarios
 INSERT INTO usuarios (nombre, correo, telefono) VALUES
@@ -31,12 +38,12 @@ INSERT INTO usuarios (nombre, correo, telefono) VALUES
 ('Fernanda Díaz', 'fer.diaz@mail.com', '555-3434');
 
 -- Estados de pedidos
-INSERT INTO estados (tipo, estado) VALUES
-('Proceso', 'Pendiente'),
-('Proceso', 'Pagado'),
-('Proceso', 'Enviado'),
-('Proceso', 'Entregado'),
-('Proceso', 'Cancelado');
+INSERT INTO estados (nombre_estado) VALUES
+('Pendiente'),
+('Pagado'),
+('Enviado'),
+('Entregado'),
+('Cancelado');
 
 -- ======================================
 --  30 INSERTS en "pedidos" + detalles
